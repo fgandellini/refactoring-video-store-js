@@ -3,13 +3,14 @@ const calculateBonus = (days, threshold) =>
     ? (days - threshold) * 1.5
     : 0
 
+const calculateMovieAmounts = days => ({
+  'regular': 2 + calculateBonus(days, 2),
+  'new': days * 3,
+  'childrens': 1.5 + calculateBonus(days, 3),
+}) 
+
 const calculateAmount = (movieCode, days) => {
-  const movieAmounts = {
-    'regular': 2 + calculateBonus(days, 2),
-    'new': days * 3,
-    'childrens': 1.5 + calculateBonus(days, 3),
-  }
-  return movieAmounts[movieCode]
+  return calculateMovieAmounts(days)[movieCode]
 }
 
 function statement(customer, movies) {
