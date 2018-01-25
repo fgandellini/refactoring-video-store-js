@@ -4,14 +4,12 @@ const calculateBonus = (days, threshold) =>
     : 0
 
 const calculateAmount = (movieCode, days) => {
-  switch (movieCode) {
-    case "regular":
-      return 2 + calculateBonus(days, 2)
-    case "new":
-      return days * 3;
-    case "childrens":
-      return 1.5 + calculateBonus(days, 3)
+  const movieAmounts = {
+    'regular': 2 + calculateBonus(days, 2),
+    'new': days * 3,
+    'childrens': 1.5 + calculateBonus(days, 3),
   }
+  return movieAmounts[movieCode]
 }
 
 function statement(customer, movies) {
