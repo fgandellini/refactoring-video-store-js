@@ -1,11 +1,16 @@
+const calculateBonus = (days, threshold) =>
+  days > threshold
+    ? (days - threshold) * 1.5
+    : 0
+
 const calculateAmount = (movieCode, days) => {
   switch (movieCode) {
     case "regular":
-      return 2 + (days > 2 ? ((days - 2) * 1.5) : 0)
+      return 2 + calculateBonus(days, 2)
     case "new":
       return days * 3;
     case "childrens":
-      return 1.5 + (days > 3 ? ((days - 3) * 1.5) : 0)
+      return 1.5 + calculateBonus(days, 3)
   }
 }
 
