@@ -9,9 +9,17 @@ const calculateMovieAmounts = days => ({
   'childrens': 1.5 + calculateBonus(days, 3),
 }) 
 
-const calculateAmount = (movieCode, days) => {
-  return calculateMovieAmounts(days)[movieCode]
-}
+const calculateAmount = (movieCode, days) =>
+  calculateMovieAmounts(days)[movieCode]
+
+const calculateMovieFrequentRenterPoints = days => ({
+  'regular': 1,
+  'new': 1 + (days > 2 ? 1 : 0),
+  'childrens': 1,
+})
+
+const calculateFrequentRenterPoints = (movieCode, days) =>
+  calculateMovieFrequentRenterPoints(days)[movieCode]
 
 function statement(customer, movies) {
   let totalAmount = 0;
@@ -20,11 +28,10 @@ function statement(customer, movies) {
   for (let r of customer.rentals) {
     let movie = movies[r.movieID];
     let thisAmount = calculateAmount(movie.code, r.days)
+    let thisFrequentRenterPoints = calculateFrequentRenterPoints(movie.code, r.days)
 
     //add frequent renter points
-    frequentRenterPoints++;
-    // add bonus for a two day new release rental
-    if(movie.code === "new" && r.days > 2) frequentRenterPoints++;
+    frequentRenterPoints += thisFrequentRenterPoints
 
     //print figures for this rental
     result += `\t${movie.title}\t${thisAmount}\n` ;
