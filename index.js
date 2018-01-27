@@ -1,3 +1,6 @@
+const sumProp = prop => array =>
+  array.reduce((sum, item) => sum + item[prop], 0)
+
 const calculateBonus = (days, threshold) =>
   days > threshold
     ? (days - threshold) * 1.5
@@ -34,15 +37,15 @@ const printFigures = rentalRecord =>
   `\t${rentalRecord.movie.title}\t${rentalRecord.amount}\n`
 
 function statement(customer, movies) {
-  let totalAmount = 0;
-  let frequentRenterPoints = 0;
   let result = `Rental Record for ${customer.name}\n`;
   const toRentalRecord = buildRentalRecord(movies)
   const rentalRecords = customer.rentals.map(toRentalRecord)
+
+  const frequentRenterPoints = sumProp('frequentRenterPoints')(rentalRecords)
+  const totalAmount = sumProp('amount')(rentalRecords)
+
   for (let rentalRecord of rentalRecords) {
-    frequentRenterPoints += rentalRecord.frequentRenterPoints
     result += printFigures(rentalRecord)
-    totalAmount += rentalRecord.amount
   }
   // add footer lines
   result += `Amount owed is ${totalAmount}\n`;
