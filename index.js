@@ -30,6 +30,9 @@ const buildRentalRecord = movies => rental => {
   }
 }
 
+const printFigures = rentalRecord =>
+  `\t${rentalRecord.movie.title}\t${rentalRecord.amount}\n`
+
 function statement(customer, movies) {
   let totalAmount = 0;
   let frequentRenterPoints = 0;
@@ -43,8 +46,7 @@ function statement(customer, movies) {
     //add frequent renter points
     frequentRenterPoints += thisFrequentRenterPoints
 
-    //print figures for this rental
-    result += `\t${movie.title}\t${thisAmount}\n` ;
+    result += printFigures(rentalRecord)
     totalAmount += thisAmount;
   }
   // add footer lines
