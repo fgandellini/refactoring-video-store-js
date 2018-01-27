@@ -37,8 +37,9 @@ function statement(customer, movies) {
   let totalAmount = 0;
   let frequentRenterPoints = 0;
   let result = `Rental Record for ${customer.name}\n`;
-  for (let r of customer.rentals) {
-    const rentalRecord = buildRentalRecord(movies)(r)
+  const toRentalRecord = buildRentalRecord(movies)
+  const rentalRecords = customer.rentals.map(toRentalRecord)
+  for (let rentalRecord of rentalRecords) {
     frequentRenterPoints += rentalRecord.frequentRenterPoints
     result += printFigures(rentalRecord)
     totalAmount += rentalRecord.amount
