@@ -21,14 +21,24 @@ const calculateMovieFrequentRenterPoints = days => ({
 const calculateFrequentRenterPoints = (movieCode, days) =>
   calculateMovieFrequentRenterPoints(days)[movieCode]
 
+const buildRentalRecord = movies => rental => {
+  const movie = movies[rental.movieID]
+  return {
+    movie,
+    amount: calculateAmount(movie.code, rental.days),
+    frequentRenterPoints: calculateFrequentRenterPoints(movie.code, rental.days)
+  }
+}
+
 function statement(customer, movies) {
   let totalAmount = 0;
   let frequentRenterPoints = 0;
   let result = `Rental Record for ${customer.name}\n`;
   for (let r of customer.rentals) {
-    let movie = movies[r.movieID];
-    let thisAmount = calculateAmount(movie.code, r.days)
-    let thisFrequentRenterPoints = calculateFrequentRenterPoints(movie.code, r.days)
+    const rentalRecord = buildRentalRecord(movies)(r)
+    let movie = rentalRecord.movie
+    let thisAmount = rentalRecord.amount
+    let thisFrequentRenterPoints = rentalRecord.frequentRenterPoints
 
     //add frequent renter points
     frequentRenterPoints += thisFrequentRenterPoints
