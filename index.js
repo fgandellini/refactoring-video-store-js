@@ -1,6 +1,9 @@
 const sumProp = prop => array =>
   array.reduce((sum, item) => sum + item[prop], 0)
 
+const sumAmounts = sumProp('amount')
+const sumFrequentRenterPoints = sumProp('frequentRenterPoints')
+
 const calculateBonus = (days, threshold) =>
   days > threshold
     ? (days - threshold) * 1.5
@@ -36,22 +39,17 @@ const buildRentalRecord = movies => rental => {
 const printFigures = rentalRecord =>
   `\t${rentalRecord.movie.title}\t${rentalRecord.amount}\n`
 
+const printStatementForCustomer = customer => rentalRecords =>
+  `Rental Record for ${customer.name}\n
+  ${rentalRecords.map(printFigures)}
+  Amount owed is ${sumAmounts(rentalRecords)}\n
+  You earned ${sumFrequentRenterPoints(rentalRecords)} frequent renter points\n`
+
 function statement(customer, movies) {
-  let result = `Rental Record for ${customer.name}\n`;
   const toRentalRecord = buildRentalRecord(movies)
+  const printStatement = printStatementForCustomer(customer)
   const rentalRecords = customer.rentals.map(toRentalRecord)
-
-  const frequentRenterPoints = sumProp('frequentRenterPoints')(rentalRecords)
-  const totalAmount = sumProp('amount')(rentalRecords)
-
-  for (let rentalRecord of rentalRecords) {
-    result += printFigures(rentalRecord)
-  }
-  // add footer lines
-  result += `Amount owed is ${totalAmount}\n`;
-  result += `You earned ${frequentRenterPoints} frequent renter points\n`;
-
-  return result;
+  return printStatement(rentalRecords)
 }
 
 module.exports = statement
