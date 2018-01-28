@@ -9,23 +9,17 @@ const calculateBonus = (days, threshold) =>
     ? (days - threshold) * 1.5
     : 0
 
-const calculateMovieAmounts = days => ({
+const calculateAmount = (movieCode, days) => ({
   'regular': 2 + calculateBonus(days, 2),
   'new': days * 3,
   'childrens': 1.5 + calculateBonus(days, 3),
-}) 
+})[movieCode]
 
-const calculateAmount = (movieCode, days) =>
-  calculateMovieAmounts(days)[movieCode]
-
-const calculateMovieFrequentRenterPoints = days => ({
+const calculateFrequentRenterPoints = (movieCode, days) => ({
   'regular': 1,
   'new': 1 + (days > 2 ? 1 : 0),
   'childrens': 1,
-})
-
-const calculateFrequentRenterPoints = (movieCode, days) =>
-  calculateMovieFrequentRenterPoints(days)[movieCode]
+})[movieCode]
 
 const buildRentalRecord = movies => rental => {
   const movie = movies[rental.movieID]
